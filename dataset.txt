@@ -1,0 +1,4 @@
+NWPU-RESISC45： https://opendatalab.com/OpenDataLab/NWPU_Data_Set
+UCMerced LandUse：https://opendatalab.com/OpenDataLab/UC_Merced_Land_Use_Dataset
+AID: https://opendatalab.com/OpenDataLab/AID
+RSSCN7 Dataset：https://opendatalab.com/OpenDataLab/RSSCN7
