@@ -11,22 +11,21 @@ import time
 from torch.optim.lr_scheduler import ReduceLROnPlateau
 device = torch.device('cuda:1' if torch.cuda.is_available() else 'cpu')
 
-# 数据预处理和加载
 transform = transforms.Compose([
-    transforms.Resize((224, 224)),
+    transforms.Resize((256, 256)),
     transforms.ToTensor(),
     transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
 ])
-# 生成高斯噪音
-mean = 0  # 均值
-std_dev = 0.1  # 标准差，根据需要调整
+
+mean = 0  
+std_dev = 0.1  
 train_dataset = datasets.ImageFolder(root='data/UCMerced_LandUse-train/Images', transform=transform)
 test_dataset = datasets.ImageFolder(root='data/UCMerced_LandUse-test/Images', transform=transform)
 
 train_loader = DataLoader(train_dataset, batch_size=64, shuffle=True)
 test_loader = DataLoader(test_dataset, batch_size=64, shuffle=False)
 
-# 模拟通信线路
+
 # The (real) AWGN channel    
 def AWGN_channel(x, snr, P=2):
     batch_size, channels, height, width = x.shape  
@@ -60,13 +59,11 @@ def Fading_channel(x, snr, P = 2):
     y_out[:, 1:feature_length:2] = y.imag
     return y_out
 
-# 联合Fading和AWGN信道
+
 def Combined_channel(x, snr, batch_size, channel, height, width):
     P=2
-    # 首先通过Fading信道
     x_faded = Fading_channel(x, snr, P)
     print ("x_faded.shape:",x_faded.shape)
-    # 然后通过AWGN信道
     x_faded = x_faded.view((batch_size, channel, height, width))
     print ("x_faded.view.shape:",x_faded.shape)
     snr = torch.randint(0, 28, (x_faded.shape[0], x_faded.shape[1], x_faded.shape[2], 1)).to(device)
@@ -87,7 +84,7 @@ class Autoencoder(nn.Module):
     def __init__(self):
         super(Autoencoder, self).__init__()
         self.encoder = nn.Sequential(
-            nn.Conv2d(512, 256, kernel_size=3, stride=1, padding=1),  # 调整 stride 为 1，不改变大小
+            nn.Conv2d(512, 256, kernel_size=3, stride=1, padding=1), 
             nn.ReLU(),
             nn.Conv2d(256, 128, kernel_size=3, stride=1, padding=1),
             nn.ReLU(),
@@ -218,7 +215,7 @@ def continue_train(cr, num_epochs, pre_checkpoint, channel_type):
     criterion = nn.CrossEntropyLoss()
     writer = SummaryWriter()
 
-    # num_epochs = 50 # 或者你想要的训练轮数
+    # num_epochs = 50 
 
     for epoch in range(num_epochs):
         model.train()
@@ -275,7 +272,7 @@ def continue_train(cr, num_epochs, pre_checkpoint, channel_type):
 
 def train(cr, num_epochs, channel_type):
     start_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
-    num_classes = len(train_dataset.classes)  # 类别数
+    num_classes = len(train_dataset.classes)  
     model = SatelliteClassifierWithAttention(num_classes)
     model = model.to(device)
     criterion = nn.CrossEntropyLoss()
