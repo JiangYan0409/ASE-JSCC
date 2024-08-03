@@ -204,4 +204,4 @@ dependencies:
     - wrapt==1.12.1
     - yacs==0.1.8
     - zipp==3.4.1
-prefix: /home/xuke/anaconda3/envs/TransGAN
+prefix: /home/xuke/anaconda3/envs/ASE-JSCC
