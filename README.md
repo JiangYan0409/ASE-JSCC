@@ -22,7 +22,7 @@
     python filename.py  
 
 **Tips:**  
-  1、classifer_attention_fading_gpu1.py contains the complete model  
+  1、ASE-JSCCtrain.py contains the complete model  
   2、The download paths for the datasets used in the paper are all included in the dataset.txt file  
 
 The content of this process is based on my own practice. If there are any issues, please contact me at the email: jyy@hnu.edu.cn.
